@@ -1,6 +1,0 @@
-@SimpleOrderForm_HostAddress = http://localhost:5211
-
-GET {{SimpleOrderForm_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SimpleContactForm.Abstractions.Interfaces;
 using SimpleContactForm.DataAccess;
 using SimpleContactForm.Service;
+using SimpleContactForm.Utils.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ connection.Open();
 builder.Services.AddDbContext<ContactFormDbContext>(x =>
     x.UseSqlite(connection));
 
+builder.Services.AddScoped<ExceptionHandleMiddleware>();
 builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddScoped<ISpecializationService, SpecializationService>();
 builder.Services.AddScoped<IContactService, ContactService>();
@@ -30,4 +32,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
+app.UseMiddleware<ExceptionHandleMiddleware>();
 app.Run();

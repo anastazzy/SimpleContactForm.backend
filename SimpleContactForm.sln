@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleContactForm.Service",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleContactForm.Abstractions", "src\SimpleContactForm.Abstractions\SimpleContactForm.Abstractions.csproj", "{2BD3929F-048D-4F24-BCA6-DBF3053B863D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleContactForm.Utils", "src\SimpleContactForm.Utils\SimpleContactForm.Utils.csproj", "{3AB5943F-8A77-4B3E-90CC-B677B915FC36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,5 +36,9 @@ Global
 		{2BD3929F-048D-4F24-BCA6-DBF3053B863D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BD3929F-048D-4F24-BCA6-DBF3053B863D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BD3929F-048D-4F24-BCA6-DBF3053B863D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AB5943F-8A77-4B3E-90CC-B677B915FC36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AB5943F-8A77-4B3E-90CC-B677B915FC36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AB5943F-8A77-4B3E-90CC-B677B915FC36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AB5943F-8A77-4B3E-90CC-B677B915FC36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

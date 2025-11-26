@@ -4,12 +4,16 @@ using SimpleContactForm.Abstractions.Interfaces;
 using SimpleContactForm.DataAccess;
 using SimpleContactForm.DataAccess.Data;
 using SimpleContactForm.DataAccess.Models;
+using SimpleContactForm.Utils.Utils;
 
 namespace SimpleContactForm.Service;
 
 public class ContactService : IContactService
 {
     private readonly ContactFormDbContext _context;
+    private const string ErrorWhenDateEarlyToday = "The date of employment cannot be earlier than today's date";
+    private const string ErrorWhenCategoryDontExist = "The employee must be assigned a category";
+    private const string ErrorWhenSearchStringIsShort = "The search is possible if more than 2 characters are entered.";
 
     public ContactService(ContactFormDbContext context)
     {
@@ -20,12 +24,12 @@ public class ContactService : IContactService
     {
         if (dto.EmploymentDate > DateTime.UtcNow)
         {
-            throw new Exception();
+            throw new BadRequestException(nameof(dto.EmploymentDate), ErrorWhenDateEarlyToday);
         }
 
         if (dto.Category is Category.None)
         {
-            throw new Exception();
+            throw new BadRequestException(nameof(dto.Category), ErrorWhenCategoryDontExist);
         }
 
         var contact = new Contact
@@ -59,7 +63,7 @@ public class ContactService : IContactService
     {
         if (string.IsNullOrEmpty(search) || search.Length < 3)
         {
-            throw new Exception("vvedite bolshe simvolov");
+            throw new BadRequestException(nameof(search), ErrorWhenSearchStringIsShort);
         }
 
         var comp = StringComparison.CurrentCultureIgnoreCase;
@@ -76,6 +80,10 @@ public class ContactService : IContactService
 
     public async Task<ContactDto[]> GetContactsAsync()
     {
-        return await _context.Contacts.Include(x => x.Specialization).Include(x => x.Skills).Select(x => x.ToContactDto()).ToArrayAsync();
+        return await _context.Contacts
+            .Include(x => x.Specialization)
+            .Include(x => x.Skills)
+            .Select(x => x.ToContactDto())
+            .ToArrayAsync();
     }
 }

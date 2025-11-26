@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SimpleContactForm.Abstractions\SimpleContactForm.Abstractions.csproj" />
     <ProjectReference Include="..\SimpleContactForm.DataAccess\SimpleContactForm.DataAccess.csproj" />
+    <ProjectReference Include="..\SimpleContactForm.Utils\SimpleContactForm.Utils.csproj" />
   </ItemGroup>
 
 </Project>

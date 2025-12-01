@@ -20,13 +20,10 @@ public sealed class ContactFormDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Contact>()
-            .HasMany(c => c.Skills)
-            .WithMany(s => s.Contacts);
-
         modelBuilder.Entity<Specialization>()
             .HasMany(s => s.Contacts)
-            .WithOne(c => c.Specialization);
+            .WithOne(c => c.Specialization)
+            .HasForeignKey(c => c.SpecializationId);
 
         var skillCSharp = new Skill { Id = 1, Name = "C#" };
         var skillAspNet = new Skill { Id = 2, Name = "ASP.NET" };
@@ -53,7 +50,7 @@ public sealed class ContactFormDbContext : DbContext
             specBackend
         );
 
-        modelBuilder.Entity<Contact>().HasData(new Contact
+        var contact1 = new Contact
         {
             Id = Guid.NewGuid(),
             FirstName = "John",
@@ -61,13 +58,9 @@ public sealed class ContactFormDbContext : DbContext
             Email = "john@example.com",
             Category = Category.Junior,
             EmploymentDate = DateTime.Now - TimeSpan.FromDays(1000),
-            Skills =
-            [
-                skillCSharp,
-                skillAspNet
-            ],
-            Specialization = specBackend
-        }, new Contact
+            SpecializationId = specBackend.Id
+        };
+        var contact2 = new Contact
         {
             Id = Guid.NewGuid(),
             FirstName = "Sarah",
@@ -75,13 +68,9 @@ public sealed class ContactFormDbContext : DbContext
             Email = "sarah@example.com",
             Category = Category.Senior,
             EmploymentDate = DateTime.Now - TimeSpan.FromDays(5000),
-            Skills =
-            [
-                skillCSharp,
-                skillAspNet
-            ],
-            Specialization = specBackend
-        }, new Contact
+            SpecializationId = specBackend.Id
+        };
+        var contact3 = new Contact
         {
             Id = Guid.NewGuid(),
             FirstName = "Michael",
@@ -89,8 +78,20 @@ public sealed class ContactFormDbContext : DbContext
             Email = "michael@example.com",
             Category = Category.Middle,
             EmploymentDate = DateTime.Now - TimeSpan.FromDays(6),
-            Skills = [skillReact],
-            Specialization = specFront
-        });
+            SpecializationId = specFront.Id
+        };
+
+        modelBuilder.Entity<Contact>().HasData(contact1, contact2, contact3);
+
+        modelBuilder.Entity<Contact>()
+            .HasMany(c => c.Skills)
+            .WithMany(s => s.Contacts)
+            .UsingEntity(x => x.HasData(
+                new { ContactsId = contact1.Id, SkillsId = skillCSharp.Id },
+                new { ContactsId = contact1.Id, SkillsId = skillAspNet.Id },
+                new { ContactsId = contact2.Id, SkillsId = skillCSharp.Id },
+                new { ContactsId = contact2.Id, SkillsId = skillAspNet.Id },
+                new { ContactsId = contact3.Id, SkillsId = skillReact.Id })
+            );
     }
 }

@@ -29,6 +29,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+var origins = builder.Configuration.GetSection("Cors").GetSection("Hosts").Get<string[]>();
+if (origins?.Length > 0)
+{
+    app.UseCors(corsPolicyBuilder =>
+        corsPolicyBuilder.WithOrigins(origins)
+            .AllowCredentials()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+}
 
 app.MapControllers();
 
